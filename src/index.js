@@ -9,39 +9,37 @@ import './sass/main.scss'
 
 const refs = {
   form: document.getElementById('search-form'),
-  loadBtn: document.querySelector('.load'),
+  //loadBtn: document.querySelector('.load'),
   gallery: document.querySelector('.gallery'),
 }
 
 refs.form.addEventListener('submit', onSubmit)
-refs.loadBtn.addEventListener('click', onLoad)
+//refs.loadBtn.addEventListener('click', onLoad)
 
 let picturesFetchApi = new PicturesFetchApi()
 
 function onSubmit(e) {
   e.preventDefault(e)
   clearGallery()
-  const searchQuery = e.currentTarget.elements.query.value
-  picturesFetchApi.query = searchQuery
+  picturesFetchApi.query = e.currentTarget.elements.query.value
   picturesFetchApi.resetPage()
   onLoad()
 }
 
-function onLoad() {
-  picturesFetchApi.fetchApi().then((data) => {
-    createGallery(data)
-    showNotification()
-    showBigImg(data)
-    showBtn()
-    scroll()
-  })
+async function onLoad() {
+  let imageMarkUp = await picturesFetchApi.fetchApi()
+  createGallery(imageMarkUp)
+  showNotification()
+  showBigImg(data)
+  //showBtn()
+  //scroll()
 }
 
-function showBtn() {
-  if (refs.loadBtn.classList.contains('hide')) {
-    refs.loadBtn.classList.remove('hide')
-  }
-}
+// function showBtn() {
+//   if (refs.loadBtn.classList.contains('hide')) {
+//     refs.loadBtn.classList.remove('hide')
+//   }
+// }
 
 function clearGallery() {
   refs.gallery.innerHTML = ''
@@ -63,11 +61,28 @@ function showBigImg(data) {
   })
 }
 
-function scroll() {
-  setTimeout(() => {
-    refs.gallery.scrollIntoView({
-      behavior: 'smooth',
-      block: 'end',
-    })
-  }, 200)
+// function scroll() {
+//   setTimeout(() => {
+//     refs.gallery.scrollIntoView({
+//       behavior: 'smooth',
+//       block: 'end',
+//     })
+//   }, 200)
+// }
+
+const callback = (enrtries, obsrv) => {
+  enrtries.forEach((entry) => {
+    let intersected = entry.isIntersecting
+    let string = picturesFetchApi.query.trim()
+    let pageNumb = picturesFetchApi.page
+    if (intersected && string !== '' && pageNumb > 1) {
+      picturesFetchApi.fetchApi().then((data) => {
+        createGallery(data)
+        showNotification()
+      })
+    }
+  })
 }
+
+const observer = new IntersectionObserver(callback, { rootMargin: '100px' })
+observer.observe(document.querySelector('.obsrv'))

@@ -31,7 +31,7 @@ export default class PicturesFetchApi {
   }
 
   get query() {
-    this.searchQuery
+    return this.searchQuery
   }
 
   set query(newQuery) {
