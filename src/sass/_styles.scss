@@ -17,12 +17,6 @@ img {
   height: auto;
 }
 
-.hide {
-  opacity: 0;
-  visibility: none;
-  pointer-events: none;
-}
-
 .gallery {
   display: flex;
   flex-wrap: wrap;
@@ -42,26 +36,6 @@ img {
   padding: 5px;
   border-radius: 4px;
   border: 2px solid black;
-}
-
-.load {
-  margin-top: 15px;
-  padding: 8px 15px 8px 15px;
-  font-weight: 900;
-  letter-spacing: 2px;
-  color: white;
-  background-color: cornflowerblue;
-  border-radius: 4px;
-  border: transparent;
-  cursor: pointer;
-
-  &:hover {
-    color: #035fcc;
-    background-color: rgba(100, 149, 237, 0.5);
-
-    transition: color 300ms ease-in-out;
-    transition: background-color 300ms ease-in-out;
-  }
 }
 
 .stats {

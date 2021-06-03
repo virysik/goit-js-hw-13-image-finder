@@ -9,12 +9,10 @@ import './sass/main.scss'
 
 const refs = {
   form: document.getElementById('search-form'),
-  //loadBtn: document.querySelector('.load'),
   gallery: document.querySelector('.gallery'),
 }
 
 refs.form.addEventListener('submit', onSubmit)
-//refs.loadBtn.addEventListener('click', onLoad)
 
 let picturesFetchApi = new PicturesFetchApi()
 
@@ -31,15 +29,8 @@ async function onLoad() {
   createGallery(imageMarkUp)
   showNotification()
   showBigImg(data)
-  //showBtn()
   //scroll()
 }
-
-// function showBtn() {
-//   if (refs.loadBtn.classList.contains('hide')) {
-//     refs.loadBtn.classList.remove('hide')
-//   }
-// }
 
 function clearGallery() {
   refs.gallery.innerHTML = ''
