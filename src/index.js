@@ -13,8 +13,21 @@ const refs = {
 }
 
 refs.form.addEventListener('submit', onSubmit)
+refs.gallery.addEventListener('click', onGalleryContainer)
 
 let picturesFetchApi = new PicturesFetchApi()
+
+function onGalleryContainer(e) {
+  const target = e.target
+
+  if (target.nodeName !== 'IMG') return
+
+  const largeImg = target.dataset.srcsize
+  const modal = basicLightbox.create(`
+    <img src="${largeImg}"/>
+  `)
+  modal.show()
+}
 
 function onSubmit(e) {
   e.preventDefault(e)
@@ -28,7 +41,7 @@ async function onLoad() {
   let imageMarkUp = await picturesFetchApi.fetchApi()
   createGallery(imageMarkUp)
   showNotification()
-  showBigImg(data)
+  //showBigImg(imageMarkUp)
   //scroll()
 }
 
@@ -44,13 +57,13 @@ function showNotification() {
   success({ text: 'downloaded succesfully' })
 }
 
-function showBigImg(data) {
-  data.forEach(({ id, largeImageURL, tags }) => {
-    document.getElementById(id).onclick = () => {
-      basicLightbox.create(`<img src=${largeImageURL} alt=${tags} />`).show()
-    }
-  })
-}
+// function showBigImg(data) {
+//   data.forEach(({ id, largeImageURL, tags }) => {
+//     document.getElementById(id).onclick = () => {
+//       basicLightbox.create(`<img src=${largeImageURL} alt=${tags} />`).show()
+//     }
+//   })
+// }
 
 // function scroll() {
 //   setTimeout(() => {
@@ -69,6 +82,7 @@ const callback = (enrtries, obsrv) => {
     if (intersected && string !== '' && pageNumb > 1) {
       picturesFetchApi.fetchApi().then((data) => {
         createGallery(data)
+        //showBigImg(data)
         showNotification()
       })
     }
